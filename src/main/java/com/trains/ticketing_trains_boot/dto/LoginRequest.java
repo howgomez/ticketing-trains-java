@@ -9,13 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberRequest {
+public class LoginRequest {
     private String username;
     private String password;
-    private String realName;
-    private String gender;
-    private Integer age;
-    private String idCard;
-    private com.trains.ticketing_trains_boot.entity.Role role;
-
 }

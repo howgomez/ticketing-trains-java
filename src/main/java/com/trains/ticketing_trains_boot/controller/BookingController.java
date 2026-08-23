@@ -46,9 +46,22 @@ public class BookingController {
         return ResponseEntity.ok(bookingService.getBookingsByMemberId(memberId));
     }
 
+    @PostMapping("/{id}/pay")
+    public ResponseEntity<BookingResponse> payBooking(@PathVariable Integer id) {
+        return ResponseEntity.ok(bookingService.payBooking(id));
+    }
+
+    @org.springframework.web.bind.annotation.PutMapping("/{id}/change-train/{newTrainId}")
+    public ResponseEntity<BookingResponse> changeBookingTrain(
+            @PathVariable Integer id,
+            @PathVariable Integer newTrainId) {
+        return ResponseEntity.ok(bookingService.changeBookingTrain(id, newTrainId));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> cancelBooking(@PathVariable Integer id) {
         bookingService.cancelBooking(id);
         return ResponseEntity.noContent().build();
     }
 }
+

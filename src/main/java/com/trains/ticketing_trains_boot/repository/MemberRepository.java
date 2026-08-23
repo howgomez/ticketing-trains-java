@@ -11,4 +11,6 @@ import com.trains.ticketing_trains_boot.entity.Member;
 public interface MemberRepository extends JpaRepository<Member, Integer> {
     Optional<Member> findByUsername(String username);
     boolean existsByUsername(String username);
+    long countByRole(com.trains.ticketing_trains_boot.entity.Role role);
+
 }

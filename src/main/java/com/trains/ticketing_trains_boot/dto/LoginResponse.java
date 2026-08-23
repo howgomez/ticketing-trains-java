@@ -1,6 +1,6 @@
 package com.trains.ticketing_trains_boot.dto;
 
-import java.time.LocalDateTime;
+import com.trains.ticketing_trains_boot.entity.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,15 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberResponse {
+public class LoginResponse {
     private Integer memberId;
     private String username;
     private String realName;
-    private String gender;
-    private Integer age;
-    private String idCard;
-    private Boolean isActive;
-    private com.trains.ticketing_trains_boot.entity.Role role;
-    private LocalDateTime createdAt;
-
+    private Role role;
+    private String message;
 }

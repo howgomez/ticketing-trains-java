@@ -81,6 +81,55 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
+    public BookingResponse payBooking(Integer bookingId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Booking not found with id: " + bookingId));
+
+        if (Boolean.TRUE.equals(booking.getIsPaid())) {
+            throw new RuntimeException("Booking is already paid");
+        }
+
+        booking.setIsPaid(true);
+        Booking updated = bookingRepository.save(booking);
+        return mapToResponse(updated);
+    }
+
+    @Override
+    @Transactional
+    public BookingResponse changeBookingTrain(Integer bookingId, Integer newTrainId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Booking not found with id: " + bookingId));
+
+        Train oldTrain = booking.getTrain();
+
+        if (oldTrain.getTrainId().equals(newTrainId)) {
+            throw new RuntimeException("Booking is already registered for this train");
+        }
+
+        Train newTrain = trainRepository.findById(newTrainId)
+                .orElseThrow(() -> new RuntimeException("New train not found with id: " + newTrainId));
+
+        if (newTrain.getSeatNumber() <= 0) {
+            throw new RuntimeException("No seats available on the new train: " + newTrain.getTrainNumber());
+        }
+
+        // Regla de negocio: Liberar asiento en tren antiguo y ocupar asiento en el nuevo
+        oldTrain.setSeatNumber(oldTrain.getSeatNumber() + 1);
+        newTrain.setSeatNumber(newTrain.getSeatNumber() - 1);
+
+        trainRepository.save(oldTrain);
+        trainRepository.save(newTrain);
+
+        booking.setTrain(newTrain);
+        booking.setPrice(newTrain.getPrice());
+
+        Booking updated = bookingRepository.save(booking);
+        return mapToResponse(updated);
+    }
+
+
+    @Override
+    @Transactional
     public void cancelBooking(Integer id) {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Booking not found with id: " + id));

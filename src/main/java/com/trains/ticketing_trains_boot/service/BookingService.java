@@ -10,5 +10,8 @@ public interface BookingService {
     List<BookingResponse> getAllBookings();
     List<BookingResponse> getBookingsByMemberId(Integer memberId);
     BookingResponse getBookingById(Integer id);
+    BookingResponse payBooking(Integer bookingId);
+    BookingResponse changeBookingTrain(Integer bookingId, Integer newTrainId);
     void cancelBooking(Integer id);
 }
+

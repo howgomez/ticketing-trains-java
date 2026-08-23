@@ -49,6 +49,12 @@ public class Member {
     @Builder.Default
     private Boolean isActive = true;
 
+    @jakarta.persistence.Enumerated(jakarta.persistence.EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    @Builder.Default
+    private Role role = Role.ROLE_MEMBER;
+
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

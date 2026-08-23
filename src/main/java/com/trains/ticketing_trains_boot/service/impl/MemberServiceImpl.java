@@ -33,6 +33,7 @@ public class MemberServiceImpl implements MemberService {
                 .gender(request.getGender())
                 .age(request.getAge())
                 .idCard(request.getIdCard())
+                .role(request.getRole() != null ? request.getRole() : com.trains.ticketing_trains_boot.entity.Role.ROLE_MEMBER)
                 .build();
 
         Member saved = memberRepository.save(member);
@@ -82,7 +83,9 @@ public class MemberServiceImpl implements MemberService {
                 .age(member.getAge())
                 .idCard(member.getIdCard())
                 .isActive(member.getIsActive())
+                .role(member.getRole())
                 .createdAt(member.getCreatedAt())
                 .build();
+
     }
 }
