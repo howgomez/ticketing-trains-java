@@ -1,6 +1,7 @@
 package com.trains.ticketing_trains_boot.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -8,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * Configuración Estándar Global de CORS para Spring Boot
  */
 @Configuration
+@EnableMethodSecurity
 public class CorsConfig implements WebMvcConfigurer {
 
     @Override

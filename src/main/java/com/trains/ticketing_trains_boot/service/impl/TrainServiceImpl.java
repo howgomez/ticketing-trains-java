@@ -2,6 +2,8 @@ package com.trains.ticketing_trains_boot.service.impl;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,7 @@ public class TrainServiceImpl implements TrainService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"trains", "trains_search"}, allEntries = true)
     public TrainResponse createTrain(TrainRequest request) {
         Train train = Train.builder()
                 .trainNumber(request.getTrainNumber())
@@ -47,6 +50,7 @@ public class TrainServiceImpl implements TrainService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "trains", key = "#id")
     public TrainResponse getTrainById(Integer id) {
         Train train = trainRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Train not found with id: " + id));
@@ -55,6 +59,7 @@ public class TrainServiceImpl implements TrainService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "trains_search", key = "#startStation + '_' + #endStation")
     public List<TrainResponse> searchTrains(String startStation, String endStation) {
         return trainRepository.findByStartStationAndEndStation(startStation, endStation)
                 .stream()
@@ -64,6 +69,7 @@ public class TrainServiceImpl implements TrainService {
 
     @Override
     @Transactional
+    @CacheEvict(value = {"trains", "trains_search"}, allEntries = true)
     public void deleteTrain(Integer id) {
         if (!trainRepository.existsById(id)) {
             throw new RuntimeException("Train not found with id: " + id);

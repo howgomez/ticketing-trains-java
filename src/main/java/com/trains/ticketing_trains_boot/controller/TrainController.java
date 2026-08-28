@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ public class TrainController {
     private final TrainService trainService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TrainResponse> createTrain(@RequestBody TrainRequest request) {
         TrainResponse created = trainService.createTrain(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
@@ -49,6 +51,7 @@ public class TrainController {
         return ResponseEntity.ok(trainService.searchTrains(startStation, endStation));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTrain(@PathVariable Integer id) {
         trainService.deleteTrain(id);
